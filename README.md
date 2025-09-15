@@ -49,7 +49,7 @@
 ```yaml
 individuals:                    # Required: List of individual records
   - id: I1                      # Required: Uniquire identifier
-    title: Sir                  # Optional: Can be string or list
+    title:                      # Optional: Can be string or list
     givenName: John             # Optional: Can be string or list
     surname: [Smith, Smyth]     # Optional: Can be string or list
     suffix: Jr.                 # Optional: Can be string or list
