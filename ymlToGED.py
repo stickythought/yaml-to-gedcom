@@ -4,30 +4,27 @@ import yaml
 import os
 
 # Date format conversion
-def convert_date(date_string):
-    if not date_string:
+def convert_date(date_value):
+    if not date_value:
         return ""
-    date_string = date_string.strip()
+
+    if hasattr(date_value, "strftime"):
+        return date_value.strftime("%d %b %Y").upper()
+
+    date_string = str(date_value).strip()
     date_length = len(date_string)
 
-    # Full date (YYYY-MM-DD to DD MMM YYYY)
-    if date_length == 10:
+    if date_length == 10:  # (YYYY-MM-DD to DD MMM YYYY)
         date_obj = datetime.strptime(date_string, "%Y-%m-%d")
-        gedcom_date = date_obj.strftime("%d %b %Y").upper()
-        return gedcom_date
-
-    # Partial date (YYYY-MM to MMM YYYY)
-    elif date_length == 7:
+        return date_obj.strftime("%d %b %Y").upper()
+    elif date_length == 7:  # (YYYY-MM to MMM YYYY)
         date_obj = datetime.strptime(date_string, "%Y-%m")
-        gedcom_date = date_obj.strftime("%b %Y").upper()
-        return gedcom_date
-
-    # Partial date (YYYY)
-    else:
+        return date_obj.strftime("%b %Y").upper()
+    else:  # (YYYY)
         return date_string
 
-usersName = input("Enter your name: ")
-yamlFile = input("Enter the name of your YAML file\n(including path if not in current directory): ")
+usersName = input("\nEnter your name: ")
+yamlFile = input("\nEnter the name of your YAML file\n(including path if not in current directory): ")
 gedcomFile = os.path.splitext(yamlFile)[0] + ".gedcom"
 with open(yamlFile, "r", encoding="utf-8") as f:
     data = yaml.safe_load(f)
@@ -60,6 +57,7 @@ with open(gedcomFile, "w", encoding="utf-8") as file:
         if not isinstance(givn, list):
             givn = [givn]
         if not isinstance(surn, list):
+            surn = [surn]
 
         fullName = givn[0] + " /" + surn[0] + "/"
 
@@ -236,4 +234,4 @@ with open(gedcomFile, "w", encoding="utf-8") as file:
 
 # ---- DONE ----
     file.write("0 TRLR\n")
-print("Created ", gedcomFile)
+print("\nCreated ", gedcomFile, "\n")
